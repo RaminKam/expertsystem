@@ -1,0 +1,15 @@
+/*****************************************************************************
+
+		Copyright (c) My Company
+
+ Project:  GUI_EXPSYS_VER1
+ FileName: Tree.PRE
+ Purpose: Predicate definitions for TREE.PRO
+ Written by: Visual Prolog
+ Comments:
+******************************************************************************/
+
+%BEGIN_DECL, System generated global predicates
+GLOBAL PREDICATES
+  win_tree_Create(WINDOW Parent) - (i)
+%END_DECL

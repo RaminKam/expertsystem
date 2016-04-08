@@ -1,0 +1,87 @@
+/*****************************************************************************
+
+		Copyright (c) My Company
+
+ Project:  GUI_EXPSYS_VER1
+ FileName: TREE.PRO
+ Purpose: No description
+ Written by: Visual Prolog
+ Comments:
+******************************************************************************/
+
+include "gui_expsys_ver1.inc"
+include "gui_expsys_ver1.con"
+include "hlptopic.con"
+
+%BEGIN_WIN Tree
+/**************************************************************************
+	Creation and event handling for window: "Tree"
+**************************************************************************/
+
+constants
+
+%BEGIN Tree, CreateParms, 15:08:38-23.6.2015, Code automatically updated!
+  win_tree_WinType = w_TopLevel
+  win_tree_Flags = [wsf_SizeBorder,wsf_TitleBar,wsf_Maximize,wsf_Minimize,wsf_Close,wsf_ClipSiblings,wsf_ClipChildren]
+  win_tree_RCT = rct(100,80,440,240)
+  win_tree_Menu = no_menu
+  win_tree_Title = "Tree"
+  win_tree_Help = idh_contents
+%END Tree, CreateParms
+global database 
+single derevo_to_view_database(TREE)
+font_parametr(FONT)
+predicates
+
+  win_tree_eh : EHANDLER
+
+clauses
+
+  win_tree_Create(_Parent):-
+ifdef use_tree
+	%Tree = tree("0",unmarked,
+	%	    [tree("3",unmarked,[],0),
+	%	     tree("2",unmarked,
+	%		  [tree("4",unmarked,[],0)],0),
+	%	     tree("1",unmarked,[],0)
+	%	    ],0),
+	derevo_to_view_database(Tr1),
+	TreeDir = tree_dirright,
+	Font = font_Create(ff_Fixed,[],10),
+	TreeWinInfo = tree_WinInfo(Font,TreeDir,[]),
+	tree_Create(win_tree_WinType,win_tree_RCT,win_tree_Title,
+		win_tree_Menu,_Parent,win_tree_Flags,win_tree_eh,0,Tr1,TreeWinInfo,[]),
+enddef
+	true.
+
+%BEGIN Tree, e_Create
+  win_tree_eh(Win,e_Create(_),0):-!,
+	FntPar=$[0xF3,0xFF,0xFF,0xFF,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x90,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x03,0x02,0x01,0x02,0x53,0x79,0x73,0x74,0x65,0x6D,0x00,0x00,0xEC,0xF8,0x12,0x00,0x48,0xF9,0x12,0x00,0x01,0x00,0x00,0x00,0x54,0xF9,0x12,0x00,0xEC,0xF8,0x12,0x00,0xFC,0xF8,0x12,0x00],  
+	tree_SetFont(Win, FntPar),
+
+%BEGIN Tree, InitControls, 15:08:38-23.6.2015, Code automatically updated!
+%END Tree, InitControls
+%BEGIN Tree, ToolbarCreate, 15:08:38-23.6.2015, Code automatically updated!
+%END Tree, ToolbarCreate
+
+	!.
+%END Tree, e_Create
+%MARK Tree, new events
+
+%BEGIN Tree, e_Size
+  win_tree_eh(_Win,e_Size(_Width,_Height),0):-!,
+ifdef use_tbar
+	toolbar_Resize(_Win),
+enddef
+	!.
+%END Tree, e_Size
+
+%BEGIN Tree, e_Menu, Parent window 
+  win_tree_eh(Win,e_Menu(ID,CAS),0):-!,
+	PARENT = win_GetParent(Win),
+	win_SendEvent(PARENT,e_Menu(ID,CAS)),
+	!.
+%END Tree, e_Menu, Parent window
+
+%END_WIN Tree
+
